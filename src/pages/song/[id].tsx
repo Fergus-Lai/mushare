@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
 import PulseLoader from "react-spinners/PulseLoader";
+import Link from "next/link";
 
 export default function Song() {
   const { query } = useRouter();
@@ -20,9 +21,17 @@ export default function Song() {
         {isLoading && <PulseLoader color={"#a1a1aa"} />}
         {!isLoading &&
           (data ? (
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex w-full flex-col items-center justify-center gap-2">
               <div className="text-3xl">{data.title}</div>
               <div className="text-xl">{data.artists}</div>
+              {data.spotify && (
+                <Link
+                  className="flex w-1/4 justify-center rounded-xl bg-zinc-600 p-2 text-center text-zinc-300"
+                  href={`https://open.spotify.com/track/${data.spotify}`}
+                >
+                  Listen on Spotify
+                </Link>
+              )}
             </div>
           ) : (
             <div className="text-4xl">
