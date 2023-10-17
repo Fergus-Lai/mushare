@@ -14,26 +14,9 @@ generator client {
 model Song {
     id          String      @id @default(uuid()) 
     title       String
-    artists     Artist[]
-    album       Album       @relation(fields:[albumId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    albumId     String
+    artists     String  
+    spotify     String?     @unique
+    youtube     String?     @unique
 
     @@index([title])
-    @@index([albumId])
-}
-
-model Album {
-    id          String       @id @default(uuid())
-    title       String
-    artists     Artist[] 
-    songs       Song[]
-    @@index([title])   
-}
-
-model Artist {
-    id          String       @id @default(uuid())
-    name        String
-    albums      Album[]
-    songs       Song[]
-    @@index([name])
 }

@@ -22,12 +22,7 @@ export default function Song() {
           (data ? (
             <div className="flex flex-col items-center justify-center">
               <div className="text-3xl">{data.title}</div>
-              <div className="text-xl">
-                {data.artists
-                  .map((artist) => `${artist.name}, `)
-                  .toString()
-                  .slice(0, -2)}
-              </div>
+              <div className="text-xl">{data.artists}</div>
             </div>
           ) : (
             <div className="text-4xl">

@@ -1,7 +1,20 @@
 import Head from "next/head";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
+import { api } from "~/utils/api";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const { mutate, isLoading, data, error } = api.songs.createSong.useMutation();
+  const [url, setUrl] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (data) {
+      router.push(`/song/${data}`);
+    }
+  }, [router, data]);
+
   return (
     <>
       <Head>
@@ -19,9 +32,19 @@ export default function Home() {
             <input
               className="w-full rounded-xl bg-zinc-600 p-2 text-zinc-400 focus:outline-none"
               placeholder="Enter Link of Music"
+              value={url}
+              onChange={(e) => {
+                setUrl(e.target.value);
+              }}
             />
-            <button className="flex h-full w-20 items-center justify-center">
-              <ArrowSmallRightIcon className="h-6 w-6 text-zinc-200" />
+            <button
+              className="flex h-full w-20 items-center justify-center text-zinc-200 disabled:text-zinc-400"
+              disabled={isLoading}
+              onClick={() => {
+                mutate(url);
+              }}
+            >
+              <ArrowSmallRightIcon className="h-6 w-6 " />
             </button>
           </div>
         </div>
