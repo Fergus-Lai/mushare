@@ -3,6 +3,8 @@ import { ArrowSmallRightIcon } from "@heroicons/react/24/solid";
 import { api } from "~/utils/api";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Home() {
   const { mutate, isLoading, data, error } = api.songs.createSong.useMutation();
@@ -15,6 +17,16 @@ export default function Home() {
     }
   }, [router, data]);
 
+  useEffect(() => {
+    if (!error) return;
+    if (error.message === "Song Not Found") {
+      toast.error("Song Not Found", { theme: "dark", toastId: "error" });
+    }
+    if (error.message.includes("Invalid url")) {
+      toast.error("Invalid URL", { theme: "dark", toastId: "error" });
+    }
+  }, [error]);
+
   return (
     <>
       <Head>
@@ -23,6 +35,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center overscroll-none bg-zinc-900">
+        <ToastContainer />
         <div className="container flex w-2/3 max-w-xl flex-col items-center justify-between gap-3 px-4 py-16">
           <h1 className="text-3xl font-bold text-zinc-400">Mushare</h1>
           <h3 className="text-zinc-400">

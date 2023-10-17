@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
+import { TRPCError } from "@trpc/server";
 
 const songRouter = createTRPCRouter({
   getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
@@ -31,7 +32,7 @@ const songRouter = createTRPCRouter({
           });
           return dbTrack.id;
         } catch (error) {
-          console.log(error);
+          throw new TRPCError({ code: "NOT_FOUND", message: "Song Not Found" });
         }
       }
     }),
